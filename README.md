@@ -10,10 +10,10 @@
 - [x] Update from Scala 2 to Scala 3.1.3
 - [x] Docker for Postgres Database
 - [ ] Update Tests
+- [ ] Tools 
 - [ ] Deploy with Kubernetes 
 - [ ] CI pipeline
 - [ ] Metrics
-- [ ] Tools 
 
 <br><hr><br>
 
@@ -24,7 +24,7 @@
 | JVM            | openjdk 17.0.4 | https://sdkman.io/install                      |
 | Scala          | 3.1.3          | https://www.scala-lang.org/download            |
 | sbt            | 1.7.1          | https://www.scala-sbt.org/download.html        |  
-| Zio            | 2.0.1          | |
+| Zio            | 2.0.2          | https://zio.dev/getting_started                |
 | Docker Desktop | 4.3.x          | https://www.docker.com/products/docker-desktop |
 
 <br><hr><br>

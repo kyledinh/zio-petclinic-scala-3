@@ -55,6 +55,7 @@ setup:
 	$(shell [ -d $(DOCKER_PG_VOL) ] || mkdir $(DOCKER_PG_VOL))
 	@echo "yarn install for frontend"
 	yarn install
+	@scala --version
 
 test-backend:
 	@sbt test

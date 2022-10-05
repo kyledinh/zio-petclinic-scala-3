@@ -4,16 +4,16 @@ ThisBuild / organization     := "com.example"
 ThisBuild / organizationName := "example"
 
 val animusVersion               = "0.2.2" // "0.1.15"
-val flywayVersion               = "9.4.0" //"8.5.12"
+val flywayVersion               = "9.4.0" // "8.5.12"
 val laminarVersion              = "0.14.2" // "0.14.2"
 val postgresVersion             = "42.3.6"
 val slf4jVersion                = "1.7.36"
 val zioHttpVersion              = "2.0.0-RC11" // "2.0.0-RC9"
-val zioJsonVersion              = "0.3.0-RC8"
+val zioJsonVersion              = "0.3.0" // "0.3.0-RC8"
 val zioLoggingVersion           = "2.1.1" // "2.0.0-RC10"
 val zioQuillVersion             = "4.5.0" // "4.0.0-RC1"
 val zioTestContainersVersion    = "0.6.0"
-val zioVersion                  = "2.0.2" //"2.0.0-RC6"
+val zioVersion                  = "2.0.2" // "2.0.0-RC6"
 val zioMetricsConnectorsVersion = "2.0.0-RC6"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
@@ -96,8 +96,9 @@ lazy val shared = (project in file("shared"))
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule) },
     libraryDependencies ++= Seq(
       "dev.zio"               %% "zio-test"                % zioVersion % Test,
-      "dev.zio"               %% "zio-test-sbt"            % zioVersion % Test,
+//      "dev.zio"               %% "zio-test-sbt"            % zioVersion % Test,
     ),
+    dependencyOverrides += "org.portable-scala" % "portable-scala-reflect_sjs1_2.13" % "1.1.2",
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
   )
   .settings(sharedSettings)
