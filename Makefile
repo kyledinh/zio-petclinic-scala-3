@@ -16,13 +16,23 @@ POSTGRES_PASSWORD := password
 ## MAIN ##############################
 .PHONY: check postgres setup
 
+backend-compile:
+	@sbt backend/clean
+	@sbt backend/compile 
+
 backend-up:
-	@sbt sbt backend/reStart
+## @sbt backend/reStart
+	echo "Running in background, currenly does NOT work...."
+	echo "Try this:"
+	echo "Run `sbt` in termial, then `backend/reStart`"
 
 check: 
 	@echo "REPO_DIR: $(REPO_DIR)"
 	@echo "DOCKER_PG_VOL: $(DOCKER_PG_VOL)"
 	@echo "$(REPO_DIR)/$(DOCKER_PG_VOL)"
+
+frontend-compile:
+	@sbt frontend/fastLinkJS
 
 frontend-up:
 	@open http://localhost:3000
@@ -45,3 +55,9 @@ setup:
 	$(shell [ -d $(DOCKER_PG_VOL) ] || mkdir $(DOCKER_PG_VOL))
 	@echo "yarn install for frontend"
 	yarn install
+
+test-backend:
+	@sbt test
+
+test-compile:
+	@sbt test:compile
