@@ -74,7 +74,6 @@ lazy val backend = (project in file("backend"))
 lazy val frontend = (project in file("frontend"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
-    // scalaVersion := "2.13.8", // FOR frontend/fastLinkJS
     name := "pet-clinic-frontend",
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule) },
     scalaJSUseMainModuleInitializer := true,
@@ -93,7 +92,6 @@ lazy val frontend = (project in file("frontend"))
 lazy val shared = (project in file("shared"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
-    // scalaVersion := "2.13.8", // FOR frontend/fastLinkJS
     scalaJSLinkerConfig ~= { _.withSourceMap(false) },
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule) },
     libraryDependencies ++= Seq(
