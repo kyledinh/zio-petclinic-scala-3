@@ -64,7 +64,8 @@ final case class VisitForm(
           onInput.mapToValue --> { stringDate =>
             val localDate = LocalDate.parse(stringDate)
             dateVar.set(localDate)
-            println(stringDate, localDate)
+            // println(stringDate, localDate)
+            println(stringDate)
           }
         )
       ),

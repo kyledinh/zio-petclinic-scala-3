@@ -1,11 +1,11 @@
-ThisBuild / scalaVersion     := "3.1.3" //"2.13.8"
+ThisBuild / scalaVersion     := "3.1.3" // "2.13.8"
 ThisBuild / version          := "0.1.0-SNAPSHOT"
 ThisBuild / organization     := "com.example"
 ThisBuild / organizationName := "example"
 
-val animusVersion               = "0.1.15" // "0.1.15"
+val animusVersion               = "0.2.2" // "0.1.15"
 val flywayVersion               = "9.4.0" //"8.5.12"
-val laminarVersion              = "0.14.5" // "0.14.2"
+val laminarVersion              = "0.14.2" // "0.14.2"
 val postgresVersion             = "42.3.6"
 val slf4jVersion                = "1.7.36"
 val zioHttpVersion              = "2.0.0-RC11" // "2.0.0-RC9"
@@ -32,7 +32,6 @@ val sharedSettings = Seq(
     "-language:implicitConversions",
     "-unchecked",
     "-Xfatal-warnings",
-    // "-Ymacro-annotations"
   )
 )
 
@@ -68,13 +67,14 @@ lazy val backend = (project in file("backend"))
   .settings(
     flywayUrl      := "jdbc:postgresql://localhost:5432/postgres",
     flywayUser     := "postgres",
-    flywayPassword := ""
+    flywayPassword := "password"
   )
   .dependsOn(shared)
 
 lazy val frontend = (project in file("frontend"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
+    // scalaVersion := "2.13.8", // FOR frontend/fastLinkJS
     name := "pet-clinic-frontend",
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule) },
     scalaJSUseMainModuleInitializer := true,
@@ -93,7 +93,13 @@ lazy val frontend = (project in file("frontend"))
 lazy val shared = (project in file("shared"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
+    // scalaVersion := "2.13.8", // FOR frontend/fastLinkJS
     scalaJSLinkerConfig ~= { _.withSourceMap(false) },
-    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule) }
+    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule) },
+    libraryDependencies ++= Seq(
+      "dev.zio"               %% "zio-test"                % zioVersion % Test,
+      "dev.zio"               %% "zio-test-sbt"            % zioVersion % Test,
+    ),
+    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
   )
   .settings(sharedSettings)

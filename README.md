@@ -55,6 +55,11 @@ Then open the browser and navigate to [localhost:3000](http://localhost:3000).
 ## Running with Docker
 > Requires Docker to be running 
 
+### Setup
+
+- `make check`
+- `make setup`
+
 Run the local database, start backend server
 ```
 make postgres-up

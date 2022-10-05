@@ -3,7 +3,7 @@ package petclinic.server
 import petclinic.models.{OwnerId, PetId, VetId, VisitId}
 import zhttp.http.Request
 import zio.json._
-import zio.{IO, ZIO}
+import zio.{Console, IO, ZIO}
 
 object ServerUtils {
 
@@ -22,6 +22,11 @@ object ServerUtils {
   def parseVetId(id: String): IO[AppError.InvalidIdError, VetId] =
     VetId.fromString(id).orElseFail(AppError.InvalidIdError("Invalid vet id"))
 
-  def parseOwnerId(id: String): IO[AppError.InvalidIdError, OwnerId] =
-    OwnerId.fromString(id).orElseFail(AppError.InvalidIdError("Invalid owner id"))
+  def parseOwnerId(id: String): IO[AppError.InvalidIdError, OwnerId] = 
+    (for {
+      _ <- Console.printLine("BEFORE parseOwnerID !!!!!!")
+      oid <- OwnerId.fromString(id)
+      _ <- Console.printLine("After parseOwnerID")
+    } yield oid
+    ).orElseFail(AppError.InvalidIdError("Invalid owner id"))
 }
