@@ -41,3 +41,8 @@ trait OwnerService {
   ): Task[Unit]
 
 }
+
+object OwnerService {
+  def get(id: OwnerId) =
+    ZIO.serviceWithZIO[OwnerService](_.get(id))
+}

@@ -8,3 +8,7 @@ dist
 
 docker_pg_vol/
 ign-*
+.bloop
+.metals
+.vscode
+metals.sbt

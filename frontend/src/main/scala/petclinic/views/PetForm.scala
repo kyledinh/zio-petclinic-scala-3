@@ -114,7 +114,8 @@ final case class PetForm(
                 onInput.mapToValue --> { stringDate =>
                   val localDate = LocalDate.parse(stringDate)
                   birthdateVar.set(localDate)
-                  println(stringDate, localDate)
+                  // println(stringDate,localDate)
+                  println(stringDate)
                 }
               )
             )
