@@ -1,5 +1,9 @@
+import scala.io.Source
+
+val semVersion = Source.fromFile("sem-version").getLines.toList.head
+
 ThisBuild / scalaVersion     := "3.1.3" // "2.13.8"
-ThisBuild / version          := "0.1.0-SNAPSHOT"
+ThisBuild / version          := semVersion // "0.1.0-SNAPSHOT"
 ThisBuild / organization     := "com.example"
 ThisBuild / organizationName := "example"
 
@@ -96,7 +100,7 @@ lazy val shared = (project in file("shared"))
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule) },
     libraryDependencies ++= Seq(
       "dev.zio"               %% "zio-test"                % zioVersion % Test,
-//      "dev.zio"               %% "zio-test-sbt"            % zioVersion % Test,
+      "dev.zio"               %% "zio-test-sbt"            % zioVersion % Test,
     ),
     dependencyOverrides += "org.portable-scala" % "portable-scala-reflect_sjs1_2.13" % "1.1.2",
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")

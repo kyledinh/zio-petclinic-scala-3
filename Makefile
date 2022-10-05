@@ -3,7 +3,7 @@ export SHELL := /bin/bash
 ## VARS AND ENVS
 REPO_DIR ?= $(shell pwd | xargs echo -n)
 GITTAG ?= $(shell git describe --tags --always --dirty)
-SEMVAR ?= $(shell head -n 1 semvar)
+SEMVER ?= $(shell head -n 1 sem-version)
 
 DOCKER_PG_VOL := docker_pg_vol
 DOCKER_PG_CONTAINER := docker_pg_container
@@ -27,9 +27,11 @@ backend-up:
 	echo "Run `sbt` in termial, then `backend/reStart`"
 
 check: 
+	@echo "SEMVER: $(SEMVER)"
 	@echo "REPO_DIR: $(REPO_DIR)"
 	@echo "DOCKER_PG_VOL: $(DOCKER_PG_VOL)"
 	@echo "$(REPO_DIR)/$(DOCKER_PG_VOL)"
+
 
 frontend-compile:
 	@sbt frontend/fastLinkJS
@@ -47,8 +49,16 @@ postgres-up:
 	-v $(REPO_DIR)/$(DOCKER_PG_VOL):/var/lib/postgresql/data \
 	-d postgres 
 
+postgres-check:
+	@docker exec -i docker_pg_container psql postgres postgres -c "\d"
+	@docker exec -i docker_pg_container psql postgres postgres -c "select * from owner"
+	@docker exec -i docker_pg_container psql postgres postgres -c "select * from pet"
+
 postgres-down:
 	@docker rm $(DOCKER_PG_CONTAINER) 
+
+postgres-shell:
+	@docker exec -it docker_pg_container psql postgres postgres
 
 setup:
 	@echo "SETTING UP DOCKER FILES/DIR"
