@@ -31,14 +31,15 @@ check:
 	@echo "REPO_DIR: $(REPO_DIR)"
 	@echo "DOCKER_PG_VOL: $(DOCKER_PG_VOL)"
 	@echo "$(REPO_DIR)/$(DOCKER_PG_VOL)"
-
+	@scala --version
 
 frontend-compile:
 	@sbt frontend/fastLinkJS
+	@cp frontend/target/scala-3.1.3/pet-clinic-frontend-fastopt/main.js js-frontend/.
 
 frontend-up:
 	@open http://localhost:3000
-	@yarn exec vite
+	@cd js-javascript && yarn exec vite
 
 postgres-up:
 	@docker run --name $(DOCKER_PG_CONTAINER) \
@@ -64,8 +65,7 @@ setup:
 	@echo "SETTING UP DOCKER FILES/DIR"
 	$(shell [ -d $(DOCKER_PG_VOL) ] || mkdir $(DOCKER_PG_VOL))
 	@echo "yarn install for frontend"
-	yarn install
-	@scala --version
+	@cd js-frontend && yarn install
 
 test-backend:
 	@sbt test
