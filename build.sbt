@@ -23,9 +23,6 @@ val zioMetricsConnectorsVersion = "2.0.0-RC6"
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 val sharedSettings = Seq(
-  libraryDependencies ++= Seq(
-    "dev.zio" %%% "zio-json" % zioJsonVersion,
-  ),
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding",
@@ -40,7 +37,7 @@ val sharedSettings = Seq(
 )
 
 lazy val root = (project in file("."))
-  .aggregate(backend, frontend, shared)
+  .aggregate(backend, frontend, shared.js, shared.jvm)
   .settings(name := "pet-clinic")
 
 lazy val backend = (project in file("backend"))
@@ -48,17 +45,17 @@ lazy val backend = (project in file("backend"))
     name := "pet-clinic-backend",
     libraryDependencies ++= Seq(
       "dev.zio"               %% "zio"                               % zioVersion,
+      "dev.zio"               %% "zio-logging-slf4j"                 % zioLoggingVersion,
       "dev.zio"               %% "zio-macros"                        % zioVersion,
       "dev.zio"               %% "zio-metrics-connectors"            % zioMetricsConnectorsVersion,
       "dev.zio"               %% "zio-test"                          % zioVersion % Test,
       "dev.zio"               %% "zio-test-sbt"                      % zioVersion % Test,
       "io.d11"                %% "zhttp"                             % zioHttpVersion,
       "io.getquill"           %% "quill-jdbc-zio"                    % zioQuillVersion,
-      "org.postgresql"         % "postgresql"                        % postgresVersion,
-      "org.flywaydb"           % "flyway-core"                       % flywayVersion,
-      "io.github.scottweaver" %% "zio-2-0-testcontainers-postgresql" % zioTestContainersVersion,
       "io.github.scottweaver" %% "zio-2-0-db-migration-aspect"       % zioTestContainersVersion,
-      "dev.zio"               %% "zio-logging-slf4j"                 % zioLoggingVersion,
+      "io.github.scottweaver" %% "zio-2-0-testcontainers-postgresql" % zioTestContainersVersion,
+      "org.flywaydb"           % "flyway-core"                       % flywayVersion,
+      "org.postgresql"         % "postgresql"                        % postgresVersion,
       "org.slf4j"              % "slf4j-api"                         % slf4jVersion,
       "org.slf4j"              % "slf4j-simple"                      % slf4jVersion
     ),
@@ -73,7 +70,7 @@ lazy val backend = (project in file("backend"))
     flywayUser     := "postgres",
     flywayPassword := "password"
   )
-  .dependsOn(shared)
+  .dependsOn(shared.jvm)
 
 lazy val frontend = (project in file("frontend"))
   .enablePlugins(ScalaJSPlugin)
@@ -87,22 +84,21 @@ lazy val frontend = (project in file("frontend"))
       "io.github.kitlangton"          %%% "animus"          % animusVersion,
       "com.raquo"                     %%% "waypoint"        % "0.5.0",
       "io.github.cquiroz"             %%% "scala-java-time" % "2.4.0",
-      "com.softwaremill.sttp.client3" %%% "core"            % "3.6.2"
+      "com.softwaremill.sttp.client3" %%% "core"            % "3.6.2",
+      "dev.zio" %%% "zio-json" % zioJsonVersion
     )
   )
   .settings(sharedSettings)
-  .dependsOn(shared)
+  .dependsOn(shared.js)
 
-lazy val shared = (project in file("shared"))
-  .enablePlugins(ScalaJSPlugin)
+lazy val shared = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Pure)
+  .in(file("shared"))
   .settings(
     scalaJSLinkerConfig ~= { _.withSourceMap(false) },
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule) },
     libraryDependencies ++= Seq(
-      "dev.zio"               %% "zio-test"                % zioVersion % Test,
-      "dev.zio"               %% "zio-test-sbt"            % zioVersion % Test,
-    ),
-    dependencyOverrides += "org.portable-scala" % "portable-scala-reflect_sjs1_2.13" % "1.1.2",
-    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
+      "dev.zio" %%% "zio-json" % zioJsonVersion
+    )
   )
-  .settings(sharedSettings)
+  .jsConfigure(_.enablePlugins(ScalaJSPlugin))
