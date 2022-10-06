@@ -52,3 +52,44 @@ open http://localhost:3000
 make frontend-up
 ```
 
+<br><hr><br>
+
+## Project Outline 
+
+A good starting point to understand this repo is with the `Makefile`. It will have the most common commands to check, setup, compile and build the project.
+
+```
+.
+├── LICENSE
+├── Makefile                   Commands to build/develop this project 
+├── README.md
+├── backend                    Scala code for RESTful api 
+│   └── src
+│       ├── main
+│       └── test
+├── build.sbt                  Dependency manager 
+├── docker_pg_vol              Docker volume for Postgres DB
+├── frontend                   Scala code that generates `main.js` for the webserver
+│   ├── src
+│   │   └── main
+│   └── target
+│       └── scala-3.1.3        main.js will be generated here
+├── js-frontend                Javasript webserver using vite/Node
+│   ├── index.html
+│   ├── main.js
+│   ├── main.scss
+│   ├── node_modules/
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── tailwind.config.js
+│   ├── vite.config.js
+│   └── yarn.lock
+├── project                    The only project directory to be concerned with
+│   ├── build.properties       sbt version  
+│   └── plugins.sbt            plugins
+├── sem-version                x.x.x
+└── shared                     Scala code shared by backend and frontend, models 
+    └── src
+        ├── main
+        └── test
+```
