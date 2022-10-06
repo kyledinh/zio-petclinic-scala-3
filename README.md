@@ -15,6 +15,10 @@
 - [ ] CI pipeline
 - [ ] Metrics
 
+<br>
+
+[![Product Name Screen Shot][product-screenshot]]()
+
 <br><hr><br>
 
 ## Prerequisites
@@ -97,3 +101,8 @@ A good starting point to understand this repo is with the `Makefile`. It will ha
         ├── main
         └── test
 ```
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[product-screenshot]: js-frontend/zio-pet-clinic-webpage.png
