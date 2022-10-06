@@ -67,6 +67,7 @@ A good starting point to understand this repo is with the `Makefile`. It will ha
 │   └── src
 │       ├── main
 │       └── test
+|
 ├── build.sbt                  Dependency manager 
 ├── docker_pg_vol              Docker volume for Postgres DB
 ├── frontend                   Scala code that generates `main.js` for the webserver
@@ -74,6 +75,7 @@ A good starting point to understand this repo is with the `Makefile`. It will ha
 │   │   └── main
 │   └── target
 │       └── scala-3.1.3        main.js will be generated here
+|
 ├── js-frontend                Javasript webserver using vite/Node
 │   ├── index.html
 │   ├── main.js
@@ -84,9 +86,11 @@ A good starting point to understand this repo is with the `Makefile`. It will ha
 │   ├── tailwind.config.js
 │   ├── vite.config.js
 │   └── yarn.lock
+|
 ├── project                    The only project directory to be concerned with
 │   ├── build.properties       sbt version  
 │   └── plugins.sbt            plugins
+|
 ├── sem-version                x.x.x
 └── shared                     Scala code shared by backend and frontend, models 
     └── src
