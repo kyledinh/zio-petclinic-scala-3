@@ -39,7 +39,7 @@ frontend-compile:
 
 frontend-up:
 	@open http://localhost:3000
-	@cd js-javascript && yarn exec vite
+	@cd js-frontend && yarn exec vite
 
 postgres-up:
 	@docker run --name $(DOCKER_PG_CONTAINER) \
