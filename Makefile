@@ -59,7 +59,7 @@ postgres-reset:
 	@rm -rf $(DOCKER_PG_VOL)
 	@mkdir $(DOCKER_PG_VOL)
 	@$(MAKE) postgres-up
-	@echo ".. wait for db to restar then, run: make postgres-init-migrate"
+	@echo ".. wait for db to restart then (~10 secs), run: make postgres-init-migrate"
 
 postgres-shell:
 	@docker exec -it docker_pg_container psql postgres postgres
