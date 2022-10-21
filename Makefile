@@ -41,6 +41,29 @@ frontend-up:
 	@open http://localhost:3000
 	@cd js-frontend && yarn exec vite
 
+postgres-check:
+	@docker exec -i docker_pg_container psql postgres postgres -c "\d"
+	@docker exec -i docker_pg_container psql postgres postgres -c "select * from owner"
+	@docker exec -i docker_pg_container psql postgres postgres -c "select * from pet"
+
+postgres-down:
+	@docker stop $(DOCKER_PG_CONTAINER) 
+	@docker rm $(DOCKER_PG_CONTAINER)
+
+postgres-init-migrate:
+	@cat ./backend/src/main/resources/db/migration/V1__create_pet_clinic.sql | docker exec -i docker_pg_container psql -U postgres -d postgres  
+	@cat ./backend/src/main/resources/db/migration/V2__add_fixtures.sql | docker exec -i docker_pg_container psql -U postgres -d postgres  
+
+postgres-reset:
+	@$(MAKE) postgres-down
+	@rm -rf $(DOCKER_PG_VOL)
+	@mkdir $(DOCKER_PG_VOL)
+	@$(MAKE) postgres-up
+	@echo ".. wait for db to restar then, run: make postgres-init-migrate"
+
+postgres-shell:
+	@docker exec -it docker_pg_container psql postgres postgres
+
 postgres-up:
 	@docker run --name $(DOCKER_PG_CONTAINER) \
 	-p 5432:5432 \
@@ -48,24 +71,18 @@ postgres-up:
 	-e POSTGRES_USER=$(POSTGRES_USER) \
 	-e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) \
 	-v $(REPO_DIR)/$(DOCKER_PG_VOL):/var/lib/postgresql/data \
-	-d postgres 
-
-postgres-check:
-	@docker exec -i docker_pg_container psql postgres postgres -c "\d"
-	@docker exec -i docker_pg_container psql postgres postgres -c "select * from owner"
-	@docker exec -i docker_pg_container psql postgres postgres -c "select * from pet"
-
-postgres-down:
-	@docker rm $(DOCKER_PG_CONTAINER) 
-
-postgres-shell:
-	@docker exec -it docker_pg_container psql postgres postgres
+	-d postgres:14
 
 setup:
 	@echo "SETTING UP DOCKER FILES/DIR"
 	$(shell [ -d $(DOCKER_PG_VOL) ] || mkdir $(DOCKER_PG_VOL))
 	@echo "yarn install for frontend"
 	@cd js-frontend && yarn install
+
+status:
+	sbt backend/reStatus
+	docker ps 
+	ps -aef | grep vite
 
 test-backend:
 	@sbt test

@@ -42,8 +42,14 @@
 - `make setup`
 
 Run the local database, start backend server in **Terminal 1**
+
+Start the database
+- `make postgres-up`
+- `make postgres-init-migrate` (do this only on first time to seed the database)
+- `make postgres-down` (to stop and remove the database container)
+
+To run the backend API server (inside sbt shell)
 ```
-make postgres-up
 sbt 
 ~ backend/reStart
 
