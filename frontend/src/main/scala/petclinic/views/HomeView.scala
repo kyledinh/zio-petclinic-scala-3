@@ -9,7 +9,7 @@ final case class HomeView() extends Component {
       cls("text-l text-justify m-5"),
       div(
         cls("mb-2 text-xl text-orange-700 font-bold"),
-        "Welcome to ZIO Pet Clinic"
+        "Welcome to the Neu Clinic"
       ),
       div(
         cls("mb-4"),
@@ -20,13 +20,17 @@ final case class HomeView() extends Component {
         "Navigate to the Owners tab to preview a list of preloaded pet owners. Select an owner to do things like view their personal information, add pets, update visits for a pet, and create owners."
       ),
       div(
+        cls("mb-4"),
+        "This version of the website uses Scala 3!"
+      ),
+      div(
         cls("mb-2 text-xl text-gray-400 font-bold"),
         "Resources"
       ),
       div(
         bodyLink(
           "GitHub repo for this project",
-          "https://github.com/zio/zio-petclinic"
+          "https://github.com/kyledinh/zio-petclinic-scala-3"
         )
       ),
       div(

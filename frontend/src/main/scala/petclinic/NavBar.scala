@@ -11,10 +11,10 @@ final case class NavBar() extends Component {
       button(
         cls("flex"),
         img(
-          src("https://raw.githubusercontent.com/zio/zio/master/ZIO.png"),
+          src("https://kyledinh.com/agency/img/logos/walvis.svg"),
           height("30px")
         ),
-        div(cls("text-gray-700 font-bold text-xl"), "Pet Clinic"),
+        div(cls("text-gray-700 font-bold text-xl"), "Neu Clinic"),
         onClick --> { _ =>
           Router.router.pushState(Page.HomePage)
         }

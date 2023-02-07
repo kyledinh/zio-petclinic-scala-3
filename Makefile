@@ -24,7 +24,7 @@ backend-up:
 ## @sbt backend/reStart
 	echo "Running in background, currenly does NOT work...."
 	echo "Try this:"
-	echo "Run `sbt` in termial, then `backend/reStart`"
+	echo "Run `sbt` in terminal, then `backend/reStart`"
 
 check: 
 	@echo "SEMVER: $(SEMVER)"
@@ -45,6 +45,7 @@ postgres-check:
 	@docker exec -i docker_pg_container psql postgres postgres -c "\d"
 	@docker exec -i docker_pg_container psql postgres postgres -c "select * from owner"
 	@docker exec -i docker_pg_container psql postgres postgres -c "select * from pet"
+	@docker exec -i docker_pg_container psql postgres postgres -c "select * from visit"
 
 postgres-down:
 	@docker stop $(DOCKER_PG_CONTAINER) 

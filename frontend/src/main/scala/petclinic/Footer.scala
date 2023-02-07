@@ -19,7 +19,7 @@ final case class Footer() extends Component {
         div(
           cls("flex"),
           footerLink("ZIO Docs", "https://zio.dev/"),
-          footerLink("GitHub Repo", "https://github.com/zio/zio-petclinic")
+          footerLink("GitHub Repo", "https://github.com/kyledinh/zio-petclinic-scala-3")
         )
       )
     )
