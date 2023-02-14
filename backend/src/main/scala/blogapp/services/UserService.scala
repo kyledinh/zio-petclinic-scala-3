@@ -1,12 +1,17 @@
 package blogapp.services
 
-import blogapp.models.*
+import blogapp.models.{User, UserRoles, Uuid}
 import zio.*
-import io.getquill.*
 
 trait UserService {
  
-  def create(firstName: String, lastName: String, address: String, phone: String, email: String): Task[User]
+  def create(
+    firstName: String, 
+    lastName: String, 
+    address: String, 
+    phone: String, 
+    email: String 
+  ): Task[User]
  
   def delete(id: Uuid): Task[Unit]
  
@@ -16,17 +21,16 @@ trait UserService {
  
   def update(
       id: Uuid,
-      firstName: Option[String] = None,
-      lastName: Option[String] = None,
-      address: Option[String] = None,
-      phone: Option[String] = None,
-      email: Option[String] = None,
-      role: Option[UserRoles] = None
+      firstName: Option[String],
+      lastName: Option[String],
+      address: Option[String],
+      phone: Option[String],
+      email: Option[String]
   ): Task[Unit]
 
 }
 
-object UserService {
-  def get(id: Uuid) =
-    ZIO.serviceWithZIO[UserService](_.get(id))
-}
+// object UserService {
+//   def get(id: Uuid) =
+//     ZIO.serviceWithZIO[UserService](_.get(id))
+// }

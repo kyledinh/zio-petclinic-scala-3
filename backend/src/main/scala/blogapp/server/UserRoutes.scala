@@ -1,11 +1,11 @@
 package blogapp.server
 
 import blogapp.models.api.{CreateUser, UpdateUser}
-import blogapp.server.ServerUtils.{parseBody, parseUserId}
+import blogapp.server.ServerUtils.{parseBody, parseUuid}
 import blogapp.services.UserService
-import zhttp.http._
-import zio._
-import zio.json._
+import zhttp.http.*
+import zio.*
+import zio.json.*
 
 final case class UserRoutes(service: UserService) {
 
@@ -14,28 +14,28 @@ final case class UserRoutes(service: UserService) {
     case Method.GET -> !! / "users" =>
       service.getAll.map(users => Response.json(users.toJson))
 
-    case Method.GET -> !! / "users" / id =>
+    case Method.GET -> !! / "user" / id =>
       for {
-        id    <- parseUserId(id)
+        id    <- parseUuid(id)
         user <- service.get(id)
       } yield Response.json(user.toJson)
 
-    case req @ Method.POST -> !! / "users" =>
+    case req @ Method.POST -> !! / "user" =>
       for {
-        createUser <- parseBody[CreateUser](req)
+        UserBody <- parseBody[CreateUser](req)
         user <-
           service.create(
-            createUser.firstName,
-            createUser.lastName,
-            createUser.address,
-            createUser.phone,
-            createUser.email
+            UserBody.firstName,
+            UserBody.lastName,
+            UserBody.address,
+            UserBody.phone,
+            UserBody.email
           )
       } yield Response.json(user.toJson)
 
-    case req @ Method.PATCH -> !! / "users" / id =>
+    case req @ Method.PATCH -> !! / "user" / id =>
       for {
-        userId     <- parseUserId(id)
+        userId     <- parseUuid(id)
         updateUser <- parseBody[UpdateUser](req)
         _ <- service.update(
                userId,
@@ -44,13 +44,12 @@ final case class UserRoutes(service: UserService) {
                updateUser.address,
                updateUser.phone,
                updateUser.email
-             )
+           )
       } yield Response.ok
 
-    // Deletes a single Owner found by their parsed ID and returns a 200 status code indicating success.
-    case Method.DELETE -> !! / "users" / id =>
+    case Method.DELETE -> !! / "user" / id =>
       for {
-        id <- parseUserId(id)
+        id <- parseUuid(id)
         _  <- service.delete(id)
       } yield Response.ok
 
@@ -58,9 +57,6 @@ final case class UserRoutes(service: UserService) {
 
 }
 
-/** Here in the companion object we define the layer that will be used to
-  * provide the routes for the OwnerService API.
-  */
 object UserRoutes {
   val layer: URLayer[UserService, UserRoutes] = ZLayer.fromFunction(UserRoutes.apply _)
 }

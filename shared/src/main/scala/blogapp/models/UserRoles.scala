@@ -2,55 +2,38 @@ package blogapp.models
 
 import zio.json._
 
-/** Species is a wrapper for a string which allows us to further explicitly
-  * define what types of Species exist in our application.
-  */
 sealed trait UserRoles {
-  def name: String
+  def role: String
 }
 
-/** The companion object houses the definitive types of Species and wraps their
-  * string representation in a case object.
-  *
-  * This conveniently allows Species to be matched on.
-  */
 object UserRoles {
 
   case object Empty extends UserRoles {
-    override def name: String = "Select..."
+    override def role: String = "Select..."
   }
 
-  case object Feline extends UserRoles  {
-    override def name: String = "Feline"
+  case object Author extends UserRoles  {
+    override def role: String = "Author"
   }
 
-  case object Canine extends UserRoles {
-    override def name: String = "Canine"
+  case object Reader extends UserRoles {
+    override def role: String = "Reader"
   }
 
-  case object Avia extends UserRoles {
-    override def name: String = "Avia"
+  case object Editor extends UserRoles {
+    override def role: String = "Editor"
   }
 
-  case object Reptile extends UserRoles {
-    override def name: String = "Reptile"
-  }
-
-  case object Suidae extends UserRoles {
-    override def name: String = "Suidae"
-  }
 
   /** Converts a string to its Species representation. */
   def fromString(s: String): UserRoles = s match {
-    case "Feline"  => Feline
-    case "Canine"  => Canine
-    case "Avia"    => Avia
-    case "Reptile" => Reptile
-    case "Suidae"  => Suidae
+    case "Author"  => Author
+    case "Reader"  => Reader 
+    case "Editor"  => Editor 
     case _         => Empty
   }
 
-  val all: List[UserRoles] = List(Empty, Feline, Canine, Avia, Reptile, Suidae)
+  val all: List[UserRoles] = List(Empty, Author, Reader, Editor)
 
   implicit val codec: JsonCodec[UserRoles] = DeriveJsonCodec.gen[UserRoles]
 

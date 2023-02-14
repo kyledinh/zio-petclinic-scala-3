@@ -1,21 +1,19 @@
 package blogapp.server
 
 import blogapp.Migrations
-import zhttp.http._
+import zhttp.http.*
 import zhttp.http.middleware.HttpMiddleware
 import zhttp.service.Server
-import zio._
+import zio.*
 
 final case class BlogServer(
     userRoutes: UserRoutes,
-    petRoutes: PetRoutes,
-    vetRoutes: VetRoutes,
-    visitRoutes: VisitRoutes,
+    scrawlRoutes: ScrawlRoutes,
     migrations: Migrations
 ) {
 
   val allRoutes: HttpApp[Any, Throwable] = {
-    userRoutes.routes ++ petRoutes.routes ++ vetRoutes.routes ++ visitRoutes.routes
+    userRoutes.routes ++ scrawlRoutes.routes 
   }
 
   /** Logs the requests made to the server.
@@ -58,8 +56,7 @@ final case class BlogServer(
 
 object BlogServer {
 
-  val layer: ZLayer[UserRoutes with PetRoutes with VetRoutes with VisitRoutes with Migrations, Nothing, BlogServer] =
-  // val layer: ZLayer[OwnerRoutes with PetRoutes with VetRoutes with VisitRoutes, Nothing, BlogServer] =
+  val layer: ZLayer[UserRoutes with ScrawlRoutes with Migrations, Nothing, BlogServer] =
     ZLayer.fromFunction(BlogServer.apply _)
 
 }

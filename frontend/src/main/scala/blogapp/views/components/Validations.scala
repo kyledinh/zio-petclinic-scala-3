@@ -1,7 +1,7 @@
 package blogapp.views.components
 
 import animus._
-import bloga.Component
+import blogapp.Component
 import com.raquo.laminar.api.L._
 
 final case class Validations($validations: Signal[List[String]], $triedToSubmit: Signal[Boolean]) extends Component {

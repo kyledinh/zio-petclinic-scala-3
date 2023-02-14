@@ -1,23 +1,23 @@
-# ZIO Pet Clinic: An sample application written with ZIO 2, Scala 3 and ScalaJS.
+# ZIO Blog App: An sample application written with ZIO 2, Scala 3 and ScalaJS.
 
 > This is repo is taking the zio/zio-petclinic project and building it with Scala 3.1.3
 
 - Original repo: https://github.com/zio/zio-petclinic (Scala 2)
 - Original video: https://www.youtube.com/watch?v=3lopiYfWmdQ (Awesome!)
+- Then updated to Scala 3: https://github.com/kyledinh/zio-petclinic-scala-3 then used as template to create this Blog App
 
 ### Changes from the original repo with:
 
 - [x] Update from Scala 2 to Scala 3.1.3
 - [x] Docker for Postgres Database
+- [x] Backend API for Blog App
+- [ ] Frontend with Scala.js
 - [ ] Update Tests
 - [ ] Tools 
 - [ ] Deploy with Kubernetes 
 - [ ] CI pipeline
 - [ ] Metrics
 
-<br>
-
-[![Product Name Screen Shot][product-screenshot]]()
 
 <br><hr><br>
 

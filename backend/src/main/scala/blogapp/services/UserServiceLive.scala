@@ -2,30 +2,29 @@ package blogapp.services
 
 import blogapp.QuillContext
 import blogapp.models.{User, UserRoles, Uuid}
+import blogapp.services.UserService
 import zio.*
 import io.getquill.*
 
 import javax.sql.DataSource
 
-import blogapp.services.UserService
 
 final case class UserServiceLive(dataSource: DataSource) extends UserService {
 
   import QuillContext._
 
-  override def create(firstName: String, lastName: String, address: String, phone: String, email: String, role: UserRoles): Task[User] =
+  override def create(
+    firstName: String, 
+    lastName: String, 
+    address: String, 
+    phone: String, 
+    email: String 
+    ): Task[User] =
     for {
-      user <- User.make(firstName, lastName, address, phone, email, role)
+      user <- User.make(firstName, lastName, address, phone, email)
       _     <- run(query[User].insertValue(lift(user))).provideEnvironment(ZEnvironment(dataSource))
     } yield user
 
-  /** `delete` uses `filter` to find an Owner in the database whose ID matches
-    * the one provided and deletes it.
-    *
-    * Unit is returned to indicate that we are running this method for its side
-    * effects, a deleted Owner gives us no information. This will either fail or
-    * succeed.
-    */
   override def delete(id: Uuid): Task[Unit] =
     run(query[User].filter(_.id == lift(id)).delete)
       .provideEnvironment(ZEnvironment(dataSource))
@@ -60,8 +59,7 @@ final case class UserServiceLive(dataSource: DataSource) extends UserService {
       lastName: Option[String],
       address: Option[String],
       phone: Option[String],
-      email: Option[String],
-      role: Option[UserRoles]
+      email: Option[String]
   ): Task[Unit] =
     run(
       dynamicQuery[User]

@@ -1,16 +1,14 @@
+package blogapp
 
-import blogapp.server.OwnerRoutespackage blogapp
-
-import blogapp.server._
-import blogapp.services._
-import zio._
+import blogapp.server.*
+import blogapp.services.*
+import zio.*
 import zio.logging.backend.SLF4J
 import zio.logging.removeDefaultLoggers
 // import zio.metrics.connectors.{MetricsConfig, newrelic}
 
-import blogapp.server.BlogServer
 
-import blogapp.services.OwnerServiceLiveobject Main extends ZIOAppDefault {
+object Main extends ZIOAppDefault {
 
   /** Configures Metrics to be run at a set interval, in our case every five seconds */
   // val metricsConfig =
@@ -21,15 +19,11 @@ import blogapp.services.OwnerServiceLiveobject Main extends ZIOAppDefault {
       .serviceWithZIO[BlogServer](_.start)
       .provide(
         BlogServer.layer,
-        PetRoutes.layer,
-        VetRoutes.layer,
-        OwnerRoutes.layer,
-        VisitRoutes.layer,
+        ScrawlRoutes.layer,
+        UserRoutes.layer,
         QuillContext.dataSourceLayer,
-        OwnerServiceLive.layer,
-        PetServiceLive.layer,
-        VetServiceLive.layer,
-        VisitServiceLive.layer,
+        UserServiceLive.layer,
+        ScrawlServiceLive.layer,
         Migrations.layer,
         SLF4J.slf4j,
         removeDefaultLoggers,

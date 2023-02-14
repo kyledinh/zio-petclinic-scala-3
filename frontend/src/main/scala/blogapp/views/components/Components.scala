@@ -1,7 +1,7 @@
 package blogapp.views.components
 
 import com.raquo.laminar.api.L._
-import bloga.Style
+import blogapp.Style
 
 import java.time.LocalDate
 
