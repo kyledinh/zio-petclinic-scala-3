@@ -7,6 +7,7 @@ node_modules
 dist
 
 docker_pg_vol/
+output/
 ign-*
 .bloop
 .metals

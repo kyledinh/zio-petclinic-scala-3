@@ -14,7 +14,7 @@ POSTGRES_USER := postgres
 POSTGRES_PASSWORD := password
 
 ## MAIN ##############################
-.PHONY: check postgres setup
+.PHONY: check codegen codegn-clear postgres setup
 
 backend-compile:
 	@sbt backend/clean
@@ -32,6 +32,14 @@ check:
 	@echo "DOCKER_PG_VOL: $(DOCKER_PG_VOL)"
 	@echo "$(REPO_DIR)/$(DOCKER_PG_VOL)"
 	@scala --version
+
+codegen:
+	## Requires btk-cli (https://github.com/kyledinh/btk-go)
+	btk -gen=model -i=specs/blogapp.0.0.3.yaml -d=output
+	cat output/gen.model.pet.scala
+
+codegen-clear:
+	rm -rf output/*.*
 
 frontend-compile:
 	@sbt frontend/fastLinkJS
