@@ -9,7 +9,7 @@ DOCKER_PG_VOL := docker_pg_vol
 DOCKER_PG_CONTAINER := docker_pg_container
 
 ## Sync vars with backend/src/main/scala/petclinic/QuillContext.scala
-POSTGRES_DB := postgres
+POSTGRES_DB := petclinic
 POSTGRES_USER := postgres
 POSTGRES_PASSWORD := password
 
@@ -17,14 +17,14 @@ POSTGRES_PASSWORD := password
 .PHONY: check postgres setup
 
 backend-compile:
-	@sbt backend/clean
-	@sbt backend/compile 
+	@sbtn backend/clean
+	@sbtn backend/compile 
+
+backend-down:
+	@sbtn backend/reStop
 
 backend-up:
-## @sbt backend/reStart
-	echo "Running in background, currenly does NOT work...."
-	echo "Try this:"
-	echo "Run `sbt` in terminal, then `backend/reStart`"
+	@sbtn backend/reStart
 
 check: 
 	@echo "SEMVER: $(SEMVER)"
@@ -34,7 +34,7 @@ check:
 	@scala --version
 
 frontend-compile:
-	@sbt frontend/fastLinkJS
+	@sbtn frontend/fastLinkJS
 	@cp frontend/target/scala-3.1.3/pet-clinic-frontend-fastopt/main.js js-frontend/.
 
 frontend-up:
@@ -42,18 +42,20 @@ frontend-up:
 	@cd js-frontend && yarn exec vite
 
 postgres-check:
-	@docker exec -i docker_pg_container psql postgres postgres -c "\d"
-	@docker exec -i docker_pg_container psql postgres postgres -c "select * from owner"
-	@docker exec -i docker_pg_container psql postgres postgres -c "select * from pet"
-	@docker exec -i docker_pg_container psql postgres postgres -c "select * from visit"
+	@docker exec -i docker_pg_container psql petclinic postgres -c "\l"
+	@docker exec -i docker_pg_container psql petclinic postgres -c "\d"
+	@docker exec -i docker_pg_container psql petclinic postgres -c "select * from owner"
+	@docker exec -i docker_pg_container psql petclinic postgres -c "select * from pet"
+	@docker exec -i docker_pg_container psql petclinic postgres -c "select * from visit"
 
 postgres-down:
 	@docker stop $(DOCKER_PG_CONTAINER) 
 	@docker rm $(DOCKER_PG_CONTAINER)
 
 postgres-init-migrate:
-	@cat ./backend/src/main/resources/db/migration/V1__create_pet_clinic.sql | docker exec -i docker_pg_container psql -U postgres -d postgres  
-	@cat ./backend/src/main/resources/db/migration/V2__add_fixtures.sql | docker exec -i docker_pg_container psql -U postgres -d postgres  
+	@docker exec -i docker_pg_container createdb -h localhost -p 5432 -U $(POSTGRES_USER) $(POSTGRES_DB) 
+	@cat ./backend/src/main/resources/db/migration/V1__create_pet_clinic.sql | docker exec -i docker_pg_container psql -U postgres -d petclinic  
+	@cat ./backend/src/main/resources/db/migration/V2__add_fixtures.sql | docker exec -i docker_pg_container psql -U postgres -d petclinic  
 
 postgres-reset:
 	@$(MAKE) postgres-down
@@ -63,7 +65,7 @@ postgres-reset:
 	@echo ".. wait for db to restart then (~10 secs), run: make postgres-init-migrate"
 
 postgres-shell:
-	@docker exec -it docker_pg_container psql postgres postgres
+	@docker exec -it docker_pg_container psql petclinic postgres
 
 postgres-up:
 	@docker run --name $(DOCKER_PG_CONTAINER) \
@@ -81,12 +83,12 @@ setup:
 	@cd js-frontend && yarn install
 
 status:
-	sbt backend/reStatus
+	sbtn backend/reStatus
 	docker ps 
 	ps -aef | grep vite
 
 test-backend:
-	@sbt test
+	@sbtn test
 
 test-compile:
-	@sbt test:compile
+	@sbtn test:compile
