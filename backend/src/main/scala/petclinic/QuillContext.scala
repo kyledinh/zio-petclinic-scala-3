@@ -21,7 +21,7 @@ object QuillContext extends PostgresZioJdbcContext(SnakeCase) {
         localDBConfig = Map(
                           "dataSource.user"     -> "postgres",
                           "dataSource.password" -> "password",
-                          "dataSource.url"      -> "jdbc:postgresql://localhost:5432/postgres"
+                          "dataSource.url"      -> "jdbc:postgresql://localhost:5432/petclinic"
                         )
         configMap = postgresURL
                       .map(parsePostgresDatabaseUrl(_).toMap)
@@ -43,6 +43,7 @@ object QuillContext extends PostgresZioJdbcContext(SnakeCase) {
       Map(
         "dataSource.user"     -> username,
         "dataSource.password" -> password,
+        "dataSource.dbname"   -> dbname,
         "dataSource.url"      -> s"jdbc:postgresql://$host:$port/$dbname"
       )
   }
