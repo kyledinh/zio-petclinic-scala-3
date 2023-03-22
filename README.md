@@ -49,19 +49,16 @@ Start the database
 - `make postgres-init-migrate` (do this only on first time to seed the database)
 - `make postgres-down` (to stop and remove the database container)
 
-To run the backend API server (inside sbt shell)
-```
-sbt 
-~ backend/reStart
-
-Crtl+c (to exit)
-```
+To run the backend API server (With sbt server)
+- `make backend-compile`
+- `make backend-up`
 
 Run the frontend in a separate **Terminal 2**
-```
-open http://localhost:3000
-make frontend-up
-```
+- `make frontend-up`
+- `open http://localhost:3000`
+
+Tools
+- `make status`
 
 <br><hr><br>
 
